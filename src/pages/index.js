@@ -1,13 +1,24 @@
 import { useState, useEffect, useRef } from "react";
-import { FaCommentAlt, FaSearch, FaPen } from "react-icons/fa";
+import { FaSearch, FaPen, FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import Card from "@/components/Card";
+import ReactPaginate from "react-paginate";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
+
+  // Search
+  const [filteredResults, setFilteredResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const searchRef = useRef(null);
 
+  //Pagination
+  const [currentItems, setCurrentItems] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [itemOffset, setItemOffset] = useState(0);
+  const itemsPerPage = 5;
+
+  //Search
   useEffect(() => {
     if (isOpen) {
       document.getElementById("search-input").focus();
@@ -28,15 +39,27 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    setFilteredResults(
+      posts.filter(
+        (item) =>
+          item.body.toLowerCase().includes(query.toLowerCase()) ||
+          item.title.toLowerCase().includes(query.toLowerCase()) ||
+          item.username.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  }, [posts, query]);
+
+  //Get data
+  useEffect(() => {
     (async () => {
       try {
         const usersRes = await fetch(
-          "https://gorest.co.in/public/v2/users?page=1&per_page=1000"
+          "https://gorest.co.in/public/v2/users?page=1&per_page=100"
         );
         const usersData = await usersRes.json();
 
         const postsRes = await fetch(
-          "https://gorest.co.in/public/v2/posts?page=1&per_page=20"
+          "https://gorest.co.in/public/v2/posts?page=1&per_page=50"
         );
         const postsData = await postsRes.json();
 
@@ -64,8 +87,21 @@ export default function Home() {
     })();
   }, []);
 
+  //Pagination
+  useEffect(() => {
+    const endOffset = itemOffset + itemsPerPage;
+    setCurrentItems(filteredResults.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(filteredResults.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage, currentItems]);
+
+  const handlePageClick = (event) => {
+    const newOffset = (event.selected * itemsPerPage) % posts.length;
+    setItemOffset(newOffset);
+    console.log(currentItems);
+  };
+
   return (
-    <div className="flex flex-col h-full py-10 space-y-5 bg-dark md:px-32 xl:px-56">
+    <div className="flex flex-col h-full py-10 space-y-5 bg-dark md:px-32 xl:px-56 min-h-screen">
       <div
         className="w-full flex space-x-5 bg-dark-second/50 p-5 border-y border-dark-third md:rounded-md md:border"
         ref={searchRef}
@@ -80,7 +116,7 @@ export default function Home() {
           <input
             id="search-input"
             type="text"
-            placeholder="Search post by its keywords..."
+            placeholder="Search by keyword or username..."
             className={`w-full outline-none bg-transparent text-sm ${
               isOpen ? "text-light" : "text-light-second"
             }`}
@@ -93,9 +129,25 @@ export default function Home() {
         </button>
       </div>
 
-      {posts.map((item) => (
+      {currentItems.map((item) => (
         <Card post={item} />
       ))}
+
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel={<FaChevronRight />}
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={4}
+        pageCount={pageCount}
+        previousLabel={<FaChevronLeft />}
+        renderOnZeroPageCount={null}
+        containerClassName="pagination"
+        pageLinkClassName="page-num"
+        previousLinkClassName="prev-num-btn"
+        nextLinkClassName="next-num-btn"
+        activeLinkClassName="activePage"
+        breakClassName="break-me"
+      />
     </div>
   );
 }
