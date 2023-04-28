@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { FaCommentAlt, FaSearch, FaPen } from "react-icons/fa";
-import { Inter } from "next/font/google";
+import Card from "@/components/Card";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
@@ -36,7 +36,7 @@ export default function Home() {
         const usersData = await usersRes.json();
 
         const postsRes = await fetch(
-          "https://gorest.co.in/public/v2/posts?page=2&per_page=20"
+          "https://gorest.co.in/public/v2/posts?page=1&per_page=20"
         );
         const postsData = await postsRes.json();
 
@@ -94,20 +94,7 @@ export default function Home() {
       </div>
 
       {posts.map((item) => (
-        <div className="flex flex-col justify-between p-5 pb-0 bg-dark-second/50 text-light border-y border-dark-third text-sm text-justify md:rounded-md md:border md:h-min-48 hover:border-light/50 hover:shadow-lg hover:shadow-black/50">
-          <div className="border-b border-dark-third">
-            <div className="flex text-sm mb-2 space-x-2">
-              <p className="text-light font-bold">{item.username}</p>
-              <p className="text-light-second/50">id: {item.user_id}</p>
-            </div>
-            <p className="font-bold text-sky text-base mb-1">{item.title}</p>
-            <p className="font-thin mb-4">{item.body}</p>
-          </div>
-          <div className="flex py-3 w-max text-slate-500 items-center space-x-2 hover:text-slate-300 font-semibold">
-            <FaCommentAlt className="mt-[1px]" />
-            <p>{item.comments.length}</p>
-          </div>
-        </div>
+        <Card post={item} />
       ))}
     </div>
   );
