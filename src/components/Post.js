@@ -51,12 +51,12 @@ export default function Card({ post }) {
   }, []);
 
   return (
-    <div className="flex flex-col justify-between p-5 pb-0 bg-dark-second/50 text-light border-y border-dark-third text-sm text-justify md:rounded-md md:border md:h-min-48 hover:border-light/50 hover:shadow-lg hover:shadow-black/50">
+    <div className="flex flex-col justify-between p-5 pb-0 bg-dark-second/50 text-light border-y border-dark-third text-sm text-justify md:rounded-md md:border md:h-min-48">
       <div className="border-b border-dark-third">
         <div className="flex text-sm mb-2 space-x-2">
-          <Link href={`/user/${users.id}`}>
+          <Link href={`/user/${post.user_id}`}>
             <p className="text-light/80 font-bold hover:text-light cursor-pointer">
-              {users.name != null ? users.name : "Deleted User"}
+              {users.name || "Anonymous"}
             </p>
           </Link>
           <p className="text-light-second/50">id: {post.user_id}</p>
@@ -80,7 +80,9 @@ export default function Card({ post }) {
                 key={comment.id}
                 className="mt-3 p-2 bg-light-second/10 rounded-md"
               >
-                <p className="font-bold text-sky">{comment.name || ""}</p>
+                <p className="font-bold text-sky">
+                  {comment.name || "Anonymous"}
+                </p>
                 <p>{comment.body}</p>
               </div>
             ))}

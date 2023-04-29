@@ -5,7 +5,9 @@ import ReactPaginate from "react-paginate";
 import Navbar from "@/components/Navbar";
 
 export default function Home() {
+  //Post
   const [posts, setPosts] = useState([]);
+  const [query, setQuery] = useState([]);
 
   //Pagination
   const [pageCount, setPageCount] = useState(0);
@@ -17,9 +19,10 @@ export default function Home() {
     (async () => {
       try {
         const postsRes = await fetch(
-          `https://gorest.co.in/public/v2/posts?page=${pageNumber}&per_page=${itemsPerPage}`
+          `https://gorest.co.in/public/v2/posts?page=${pageNumber}&per_page=${itemsPerPage}&body=${query}`
         );
         const postsData = await postsRes.json();
+
         setPosts(postsData);
 
         const totalPages = parseInt(postsRes.headers.get("X-Pagination-Pages"));
@@ -29,7 +32,7 @@ export default function Home() {
         console.error(error);
       }
     })();
-  }, [pageNumber]);
+  }, [pageNumber, query]);
 
   //handle pagination
   const handlePageClick = ({ selected }) => {
@@ -37,11 +40,11 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col h-full py-10  bg-dark md:px-16 lg:px-32 xl:px-80 min-h-screen space-y-5">
-      <Navbar />
+    <div className="flex flex-col h-full py-5 bg-dark md:px-16 lg:px-32 xl:px-80 min-h-screen space-y-5">
+      <Navbar menu="Posts" queryData={setQuery} />
 
       {posts.map((item) => (
-        <Post post={item} />
+        <Post post={item} key={item.id} />
       ))}
 
       <ReactPaginate
