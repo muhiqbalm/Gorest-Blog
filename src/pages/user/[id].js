@@ -105,7 +105,7 @@ export default function UserDetails() {
   }
 
   return (
-    <div className="flex flex-col h-full py-5  bg-dark md:px-16 lg:px-32 xl:px-80 min-h-screen justify-between">
+    <div className="flex flex-col h-full py-5 bg-dark md:px-16 lg:px-32 xl:px-80 min-h-screen justify-between">
       <div className="space-y-5">
         <div className="md:flex md:gap-5">
           <div className="w-full md:grid md:grid-cols-10 bg-dark-second/50 p-5 px-5 border-y border-dark-third md:rounded-md md:border items-center justify-center text-sm">
@@ -197,7 +197,7 @@ export default function UserDetails() {
 
       <Link
         href={"/"}
-        className="inline-flex pl-5 md:p-0 w-full justify-center"
+        className="inline-flex pl-5 mb-5 md:p-0 w-full justify-center"
       >
         <p className="text-sm text-light-second/50 italic hover:text-light/50 cursor-pointer">
           Back to previous page
