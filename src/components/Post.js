@@ -29,7 +29,7 @@ export default function Card({ post }) {
         console.error(error);
       }
     })();
-  }, [post]);
+  }, [users]);
 
   useEffect(() => {
     if (isOpen) {
