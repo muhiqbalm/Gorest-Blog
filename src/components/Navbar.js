@@ -59,12 +59,15 @@ export default function Navbar(props) {
             onChange={(e) => setQuery(e.target.value)}
           />
         </div>
-        <button className="inline-flex items-center justify-center rounded-full px-6  text-light bg-gradient-to-r from-blue-500/80 to-sky hover:shadow-lg hover:shadow-blue-600/40 duration-300 hover:-translate-y-1">
+        <Link
+          href={"/user/create"}
+          className="inline-flex items-center justify-center rounded-full px-6  text-light bg-gradient-to-r from-blue-500/80 to-sky hover:shadow-lg hover:shadow-blue-600/40 duration-300 hover:-translate-y-1"
+        >
           <FaPen className="m-0 md:mr-3 scale-110" />
           <p className="font-semibold text-md hidden md:block lg:text-lg ">
             Create
           </p>
-        </button>
+        </Link>
       </div>
       <div className="w-full md:w-max flex bg-dark-second/50 p-5 py-3 md:py-5 border-y border-dark-third md:rounded-md md:border space-x-5">
         <Link
