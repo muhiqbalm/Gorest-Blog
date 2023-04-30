@@ -86,28 +86,6 @@ export default function Card({ post }) {
                 <p>{comment.body}</p>
               </div>
             ))}
-
-          <div
-            className={`flex items-center px-2 py-3 w-full border rounded-md transition duration-500 bg-light-second/10 mt-3 ${
-              isOpen ? "border-sky bg-dark-third/50" : "border-transparent"
-            }`}
-            onClick={() => setIsOpen(!isOpen)}
-            ref={commentRef}
-          >
-            <input
-              id={`comment-input-${post.id}`}
-              type="text"
-              placeholder="Write your comment here..."
-              className={`w-full outline-none bg-transparent text-sm ${
-                isOpen ? "text-light" : "text-light-second"
-              }`}
-            />
-            <BsFillSendFill
-              className={`text-light-second ml-2 mr-1 ${
-                isOpen ? "hover:text-light cursor-pointer " : "hidden"
-              }`}
-            />
-          </div>
         </div>
       </div>
     </div>
